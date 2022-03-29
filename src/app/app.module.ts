@@ -7,6 +7,11 @@ import { IndexModule } from './components/index.module';
 import { IndexComponent } from './components/index.component';
 import { InventoryModule } from "./components/inventory/inventory.module";
 import { ListComponent } from './components/inventory/list.component';
+import { AuthModule } from './components/auth/auth.module';
+import { SignInComponent } from './components/auth/signin.component';
+import { SignUpComponent } from './components/auth/signup.component';
+import { AddEditComponent } from './components/inventory/add_edit.component';
+import { AuthGuard } from "./components/auth/auth.guard";
 
 @NgModule({
   declarations: [
@@ -16,13 +21,20 @@ import { ListComponent } from './components/inventory/list.component';
     BrowserModule,
     IndexModule,
     InventoryModule,
+    AuthModule,
     RouterModule.forRoot([
       { path: "", component: IndexComponent },
       { path: "inventory/list", component: ListComponent },
+      { path: "inventory/:mode", component: AddEditComponent, canActivate: [AuthGuard]},
+      { path: "inventory/:mode/:id", component: AddEditComponent, canActivate: [AuthGuard] },
+      { path: "users/signin", component: SignInComponent },
+      { path: "users/signup", component: SignUpComponent },
       { path: "**", redirectTo: "" }
     ])
   ],
-  providers: [],
+  providers: [
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
